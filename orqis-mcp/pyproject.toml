@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "orqis-mcp"
+version = "0.1.0"
+description = "Read-only MCP server exposing five ORQIS backend services (workspaces, use cases, agents, shared memory, temporal knowledge) as MCP tools."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Navedas Intelligence" }]
+keywords = ["mcp", "model-context-protocol", "orqis", "ai-ops"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# Deliberately NOT the ORQIS backend's own dependencies (fastapi, asyncpg,
+# openai, ...) — this package does not vendor or re-pin them. It imports an
+# existing ORQIS/backend checkout in-process at runtime (see server.py and
+# README.md's "Dependency on ORQIS" section), so that backend's own
+# dependencies must already be installed in whatever environment runs
+# `orqis-mcp` — typically the ORQIS backend's own virtualenv.
+dependencies = [
+    "mcp>=1.29.1,<2",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+]
+
+[project.scripts]
+orqis-mcp = "orqis_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/deepikaagent06/orqis-mcp"
+Issues = "https://github.com/deepikaagent06/orqis-mcp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/orqis_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]

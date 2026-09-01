@@ -1,0 +1,17 @@
+# Minimal dependency set for the orqis-mcp Glama demo image.
+#
+# Deliberately NOT ORQIS/backend/requirements.txt (fastapi's full extras,
+# openai, redis, neo4j/graphiti drivers, uvicorn, ...) -- the import-graph
+# investigation confirmed the five MCP tools' code path (backend_slice/)
+# never imports any of those. Only what backend_slice/ and orqis-mcp/
+# actually import at runtime:
+#   - mcp, python-dotenv: orqis-mcp itself (see orqis-mcp/pyproject.toml)
+#   - fastapi: only for HTTPException in middleware/tenant_context.py
+#   - asyncpg: database/__init__.py
+#   - pydantic-settings, pydantic: config.py's Settings
+mcp>=1.29.1,<2
+python-dotenv>=1.0.0
+fastapi==0.115.12
+asyncpg==0.30.0
+pydantic-settings==2.9.1
+pydantic==2.11.5

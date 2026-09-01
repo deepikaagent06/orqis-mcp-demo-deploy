@@ -1,0 +1,27 @@
+# Never let a stray real .env, secret, or credential end up in the build
+# context / image, even if one is later dropped into this directory.
+.env
+*.env
+!.env.example
+**/.env
+**/*.env
+!**/.env.example
+
+# No source-control metadata into the image.
+.git
+**/.git
+.gitignore
+
+# No local venvs / caches / bytecode.
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+**/.pytest_cache
+
+# Editor/OS noise.
+.DS_Store
+Thumbs.db
